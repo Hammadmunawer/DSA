@@ -1,53 +1,43 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-//merge sort much moreoptimized than other algporithm .merge algo means divide and merge
+//merge sort much more optimized than other algporithm .merge algo means divide and merge
 //time complexity worst case o(n*log2n) and sc o(n)
-void merge(vector <int> &arr,int low ,int mid,int high){
-    vector<int> temp;
-    int left=low;
-    int right=mid+1;
-    while (left <=mid && right <=high)
-    {
-     if(arr[left]<= arr[right]){
-        temp.push_back(arr[left]);
-        left++;
-     }
-     else{
-        temp.push_back(arr[right]);
-        right++;
-     }
-    }
-    while (left<=mid)
-    {
-        temp.push_back(arr[left]);
-        left++;
-    }
-    while (right<=high)
-    {
-         temp.push_back(arr[right]);
-        right++;
-    }
-    for (int i = low; i <=high; i++)
-    {
-        arr[i]=temp[i-low];
-    }
-    
-    
-    
+void merge(vector<int> &arr,int st,int mid ,int end){
+	vector <int> temp;
+	int i =st,j=mid+1;
+	while(i<=mid&&j<=end){
+		if(arr[i]<=arr[j]){
+			temp.push_back(arr[i]);
+		i++;
+		}else{
+			temp.push_back(arr[j]);
+			j++; 
+		}
+		
+	}
+	while(i<=mid){
+			temp.push_back(arr[i]);
+		i++;
+	}
+	while(j<=end){
+			temp.push_back(arr[j]);
+			j++;
+	}
+	for (int idx=0;idx<temp.size();idx++){
+		arr[idx+st]=temp[idx];
+	}
 }
 
-void mS(vector<int> &arr,int low,int high){
-    if(low >=high ) return;
-    int mid=(low + high)/2;
-    mS(arr,low,mid);
-    mS(arr,mid+1,high);
-    merge(arr,low,mid,high);
-}
+void mergeSort(vector<int> &arr,int st,int end){
+	if(st<end){
+		int mid=st+(end-st)/2;
+		mergeSort( arr, st, mid);//left half
+		mergeSort( arr, mid+1,end);//right half
+		merge(arr,st,mid,end);//merge
+	}
+} 
 
-void mergeSort(vector <int> &arr,int n){
-   mS(arr,0,n-1);
-}
 
 
 int main(){
@@ -58,7 +48,7 @@ for (int i = 0; i < n; i++)
 {
     cin>>arr[i];
 }
-mergeSort(arr,n);
+mergeSort(arr,0,arr.size()-1);
 for (int x : arr)
 {
     cout<<x<<" ";
